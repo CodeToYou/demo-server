@@ -2,15 +2,27 @@ import mongoose from 'mongoose';
 import ProductDB from '../models/Product.js';
 
 
+export const getProducts = async (req, res) => {
+
+  try {
+
+    const items = await ProductDB.find({ enabled: true });
+    res.status(200).json(items);
+
+  } catch (error) {
+
+    res.status(404).json({ message: error.message });
+
+  }
+
+}
+
+
 export const getAllProducts = async (req, res) => { 
 
   try {
 
-      const itemsV = await ProductDB.find(); 
-      const items = itemsV?.map((item) => {
-        const { _id, name, price, enabled } = item;
-        return { _id, name, price, enabled };          
-      });      
+      const items = await ProductDB.find();    
       res.status(200).json(items);
 
   } catch (error) {
@@ -79,5 +91,47 @@ export const deleteProduct = async (req, res) => {
   await ProductDB.findByIdAndRemove(id);
 
   res.json({ message: "Product deleted successfully." });
+
+}
+
+
+export const moveProductToRecycleBin = async (req, res) => {
+
+  const { id } = req.params;
+  
+  if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).json({ message: `No product with id: ${id}`});
+
+  try {
+
+    await ProductDB.findByIdAndUpdate(id, { enabled: false }, { new: true });
+    
+    res.json({ message: "Product moved to trash successfully" });
+
+  } catch (error) {
+
+    res.status(409).json({ message: error.message });
+
+  }
+
+}
+
+
+export const restoreProduct = async (req, res) => {
+
+  const { id } = req.params;
+  
+  if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).json({ message: `No product with id: ${id}`});
+
+  try {
+
+    await ProductDB.findByIdAndUpdate(id, { enabled: true }, { new: true });
+    
+    res.json({ message: "Product restored satisfactorily" });
+
+  } catch (error) {
+
+    res.status(409).json({ message: error.message });
+
+  }
 
 }

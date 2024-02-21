@@ -1,23 +1,31 @@
 import express from 'express';
 
-import { getAllOrders, 
-         createOrder, 
-         updateOrder, 
-         deleteOrder,
-         getAllOrdersRecycleBin,
-         moveOrderToRecycleBin,
-         restoreOrder } from '../controllers/adminOrder.js';
+import { 
+  getOrders,
+  getRecycleBinOrders,
+  createOrder, 
+  updateOrder, 
+  deleteOrder,
+  moveOrderToRecycleBin,
+  restoreOrder 
+} from '../controllers/adminOrder.js';
 
-import { getAllProducts, 
-         createProduct, 
-         updateProduct, 
-         deleteProduct } from '../controllers/adminProduct.js';
+import { 
+  getProducts,
+  getAllProducts, 
+  createProduct, 
+  updateProduct, 
+  deleteProduct,
+  moveProductToRecycleBin,
+  restoreProduct 
+} from '../controllers/adminProduct.js';
 
-import { getAllAdmin,
-         deleteAdmin } from '../controllers/adminAdmin.js';
-
-import { signin, 
-         signup } from "../controllers/admin.js";      
+import { 
+  signin, 
+  signup,
+  getAllAdmin,
+  deleteAdmin 
+} from '../controllers/adminAdmin.js';  
          
 import { getHomeInfo } from "../controllers/adminHome.js";  
          
@@ -26,26 +34,29 @@ import auth from "../middleware/auth.js";
 
 const router = express.Router();
 
-router.get('/order/', auth, getAllOrders);
-router.post('/order/', auth, createOrder);
-router.patch('/order/:id', auth, updateOrder);
-router.delete('/order/:id', auth, deleteOrder);
-router.get('/order/recycle', auth, getAllOrdersRecycleBin);
-router.delete('/order/recycle/:id', auth, moveOrderToRecycleBin);
-router.delete('/order/restore/:id', auth, restoreOrder);
 
-router.get('/product/', auth, getAllProducts);
+router.get('/order/', auth, getOrders);
+router.get('/order/recycle', auth, getRecycleBinOrders);
+router.post('/order/', auth, createOrder);
+router.put('/order/:id', auth, updateOrder);
+router.delete('/order/:id', auth, deleteOrder);
+router.put('/order/:id/recycle', auth, moveOrderToRecycleBin);
+router.put('/order/:id/restore', auth, restoreOrder);
+
+router.get('/product/', auth, getProducts);
+router.get('/products/', auth, getAllProducts);
 router.post('/product/', auth, createProduct);
-router.patch('/product/:id', auth, updateProduct);
+router.put('/product/:id', auth, updateProduct);
 router.delete('/product/:id', auth, deleteProduct);
+router.put('/product/:id/recycle', auth, moveProductToRecycleBin);
+router.put('/product/:id/restore', auth, restoreProduct);
 
 router.get('/admin/', auth, getAllAdmin);
 router.delete('/admin/:id', auth, deleteAdmin);
-
-router.get('/home', auth, getHomeInfo);
-
 router.post("/signin", signin);
 router.post("/signup", signup);
+
+router.get('/home', auth, getHomeInfo);
 
 
 export default router;

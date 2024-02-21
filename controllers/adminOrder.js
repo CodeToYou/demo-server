@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import OrderDB from '../models/Order.js';
 
 
-export const getAllOrders = async (req, res) => { 
+export const getOrders = async (req, res) => { 
 
   try {
 
@@ -18,9 +18,25 @@ export const getAllOrders = async (req, res) => {
 }
 
 
+export const getRecycleBinOrders = async (req, res) => { 
+
+  try {
+
+      const items = await OrderDB.find({ enabled: false });    
+      res.status(200).json(items);
+
+  } catch (error) {
+
+      res.status(404).json({ message: error.message });
+
+  }
+  
+}
+
+
 export const createOrder = async (req, res) => {
 
-  const { client, cart, payment, total } = req.body;
+  const { client, cart, payment, total, enabled } = req.body;
 
   try {
 
@@ -31,7 +47,7 @@ export const createOrder = async (req, res) => {
     const day = new Date();
     const daySpc = new Date(day - 4*3600*1000);
 
-    const newItem = new OrderDB({ client, cart, payment, total, ordern, createdAt: daySpc, updatedAt: daySpc })
+    const newItem = new OrderDB({ client, cart, payment, total, ordern, enabled, createdAt: daySpc, updatedAt: daySpc })
 
     await newItem.save();
 
@@ -49,7 +65,7 @@ export const createOrder = async (req, res) => {
 export const updateOrder = async (req, res) => {
 
   const { id } = req.params;
-  const { client, cart, payment, total } = req.body;
+  const { client, cart, payment, total, enabled } = req.body;
   
   if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).json({ message: `No order with id: ${id}`});
 
@@ -57,7 +73,7 @@ export const updateOrder = async (req, res) => {
 
     let updatedAt = new Date();
     
-    const updatedItem = { client, cart, payment, total, updatedAt };
+    const updatedItem = { client, cart, payment, total, enabled, updatedAt };
 
     await OrderDB.findByIdAndUpdate(id, updatedItem, { new: true });
     
@@ -82,22 +98,6 @@ export const deleteOrder = async (req, res) => {
 
   res.json({ message: "Order deleted successfully." });
 
-}
-
-
-export const getAllOrdersRecycleBin = async (req, res) => { 
-
-  try {
-
-      const items = await OrderDB.find({ enabled: false });    
-      res.status(200).json(items);
-
-  } catch (error) {
-
-      res.status(404).json({ message: error.message });
-
-  }
-  
 }
 
 
