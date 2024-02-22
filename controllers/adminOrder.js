@@ -40,18 +40,18 @@ export const createOrder = async (req, res) => {
 
   try {
 
-    const maxItem = await OrderDB.find().sort({ordern:-1}).limit(1);
+    const maxItem = await OrderDB.find().sort({ orderN: -1 }).limit(1);
 
-    const ordern = maxItem.length > 0 ? (maxItem[0]?.ordern || 0) + 1 : 1;
+    const orderN = maxItem.length > 0 ? (maxItem[0]?.orderN || 0) + 1 : 1;
 
     const day = new Date();
     const daySpc = new Date(day - 4*3600*1000);
 
-    const newItem = new OrderDB({ client, cart, payment, total, ordern, enabled, createdAt: daySpc, updatedAt: daySpc })
+    const newItem = new OrderDB({ client, cart, payment, total, orderN, enabled, createdAt: daySpc, updatedAt: daySpc })
 
     await newItem.save();
 
-    res.status(201).json({ message: "Order added satisfactorily", ordern });
+    res.status(201).json({ message: "Order added satisfactorily", orderN });
 
   } catch (error) {
 

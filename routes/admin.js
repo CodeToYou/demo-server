@@ -35,28 +35,28 @@ import auth from "../middleware/auth.js";
 const router = express.Router();
 
 
-router.get('/order/', auth, getOrders);
-router.get('/order/recycle', auth, getRecycleBinOrders);
-router.post('/order/', auth, createOrder);
-router.put('/order/:id', auth, updateOrder);
-router.delete('/order/:id', auth, deleteOrder);
-router.put('/order/:id/recycle', auth, moveOrderToRecycleBin);
-router.put('/order/:id/restore', auth, restoreOrder);
+router.get('/order/', getOrders);
+router.get('/order/recycle', getRecycleBinOrders);
+router.post('/order/', createOrder);
+router.put('/order/:id', updateOrder);
+router.delete('/order/:id', deleteOrder);
+router.put('/order/:id/recycle', moveOrderToRecycleBin);
+router.put('/order/:id/restore', restoreOrder);
 
-router.get('/product/', auth, getProducts);
-router.get('/products/', auth, getAllProducts);
-router.post('/product/', auth, createProduct);
-router.put('/product/:id', auth, updateProduct);
-router.delete('/product/:id', auth, deleteProduct);
-router.put('/product/:id/recycle', auth, moveProductToRecycleBin);
-router.put('/product/:id/restore', auth, restoreProduct);
+router.get('/product/', getProducts);
+router.get('/products/', getAllProducts);
+router.post('/product/', createProduct);
+router.put('/product/:id', updateProduct);
+router.delete('/product/:id', deleteProduct);
+router.put('/product/:id/recycle', moveProductToRecycleBin);
+router.put('/product/:id/restore', restoreProduct);
 
-router.get('/admin/', auth, getAllAdmin);
-router.delete('/admin/:id', auth, deleteAdmin);
+router.get('/admin/', getAllAdmin);
+router.delete('/admin/:id', deleteAdmin);
 router.post("/signin", signin);
 router.post("/signup", signup);
 
-router.get('/home', auth, getHomeInfo);
+router.get('/home', getHomeInfo);
 
 
 export default router;
