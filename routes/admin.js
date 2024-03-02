@@ -27,7 +27,7 @@ import {
   deleteAdmin 
 } from '../controllers/adminAdmin.js';  
          
-import { getHomeInfo } from "../controllers/adminHome.js";  
+import { getHomeCardsCount, getHomeBalance, getHomeInfo, getHomeGraph } from "../controllers/adminHome.js";  
          
 import auth from "../middleware/auth.js";
 
@@ -57,6 +57,8 @@ router.post("/signin", signin);
 router.post("/signup", signup);
 
 router.get('/home', getHomeInfo);
-
+router.get('/home/count', getHomeCardsCount)
+router.get('/home/balance', getHomeBalance)
+router.get('/home/graph', getHomeGraph)
 
 export default router;
