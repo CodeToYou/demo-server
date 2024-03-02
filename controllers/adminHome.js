@@ -168,8 +168,8 @@ export const getHomeBalance = async (req, res) => {
       ordersRange = await OrderDB.find(
         { 
           createdAt: { 
-            $gte: ISODate(startDate), 
-            $lt: ISODate(endDate) 
+            $gte: startDate, 
+            $lt: endDate
           } 
         }
       );
