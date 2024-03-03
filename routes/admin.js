@@ -3,6 +3,7 @@ import express from 'express';
 import { 
   getOrders,
   getRecycleBinOrders,
+  getOrder,
   createOrder, 
   updateOrder, 
   deleteOrder,
@@ -37,6 +38,7 @@ const router = express.Router();
 
 router.get('/order/', getOrders);
 router.get('/order/recycle', getRecycleBinOrders);
+router.get('/order/:id', getOrder);
 router.post('/order/', createOrder);
 router.put('/order/:id', updateOrder);
 router.delete('/order/:id', deleteOrder);

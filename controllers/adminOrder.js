@@ -34,6 +34,23 @@ export const getRecycleBinOrders = async (req, res) => {
 }
 
 
+export const getOrder = async (req, res) => {
+
+  try {
+
+    const { id } = req.params;
+    const item = await OrderDB.findById(id);
+    res.status(200).json(item);
+
+  } catch (error) {
+
+    res.status(404).json({ message: error.message });
+
+  }
+
+}
+
+
 export const createOrder = async (req, res) => {
 
   const { client, cart, payment, total, enabled } = req.body;
