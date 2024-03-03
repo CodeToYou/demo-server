@@ -88,10 +88,18 @@ export const deleteProduct = async (req, res) => {
 
   if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).json({ message: `No product with id: ${id}`});
 
-  await ProductDB.findByIdAndRemove(id);
+  try {
 
-  res.json({ message: "Product deleted successfully." });
+    await ProductDB.findByIdAndDelete(id);
 
+    res.json({ message: "Product deleted successfully." });
+
+  } catch (error) {
+
+    res.status(409).json({ message: error.message });
+
+  }
+  
 }
 
 

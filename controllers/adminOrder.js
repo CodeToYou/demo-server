@@ -111,10 +111,17 @@ export const deleteOrder = async (req, res) => {
 
   if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).json({ message: `No order with id: ${id}`});
 
-  await OrderDB.findByIdAndRemove(id);
+  try {
 
-  res.json({ message: "Order deleted successfully." });
+    await OrderDB.findByIdAndDelete(id);
 
+    res.json({ message: "Order deleted successfully." });
+
+  } catch (error) {
+
+    res.status(409).json({ message: error.message });
+
+  }
 }
 
 
